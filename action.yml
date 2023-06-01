@@ -1,11 +1,40 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: "Define terraform parameters"
+description: "Defining parameters for terraform"
+author: "Mathieu Henrotay"
 inputs:
-  milliseconds: # change this
+  app_key:
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+    description: "App key to use to build app_url and terraform_workspace"
+  github_branch:
+    required: true
+    description: "Github branch"
+  cloudflare_worksite_zone_id:
+    description: "Worksite cloudflare zone id"
+    required: true
+  cloudflare_trustup_io_zone_id:
+    description: "Trustup IO cloudflare zone id"
+    required: true
+  doppler_service_token_production:
+    description: "Doppler token to retrieve secrets in production"
+    required: true
+  doppler_service_token_staging:
+    description: "Doppler token to retrieve secrets in staging"
+    required: true
+outputs:
+  doppler_app_service_token:
+    description: "Doppler service token secret name"
+  trustup_app_key:
+    description: "Trustup app key"
+  suffixed_trustup_app_key:
+    description: "Trustup app key for current environment"
+  app_url:
+    description: "App url"
+  app_key:
+    description: "Generated app key to set in secrets if none present yet"
+  app_environment:
+    description: "App environment based on current branch"
+  cloudflare_zone_id:
+    description: "Cloudflare zone to use for DNS record"
 runs:
-  using: 'node16'
-  main: 'dist/index.js'
+  using: "node16"
+  main: "dist/index.js"

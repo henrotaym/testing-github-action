@@ -21,4 +21,9 @@ jobs:
       - uses: actions/checkout@v3
       - uses: ./
         with:
-          milliseconds: 1000
+          app_key: "trustup-io-website-monitoring"
+          github_branch: "main"
+          cloudflare_worksite_zone_id: "worksite"
+          cloudflare_trustup_io_zone_id: "trustup-io"
+          doppler_service_token_production: "production-token"
+          doppler_service_token_staging: "staging-token"
