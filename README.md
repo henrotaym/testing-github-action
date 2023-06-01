@@ -2,7 +2,23 @@
   <a href="https://github.com/actions/typescript-action/actions"><img alt="typescript-action status" src="https://github.com/actions/typescript-action/workflows/build-test/badge.svg"></a>
 </p>
 
-# Create a JavaScript Action using TypeScript
+# USAGE
+```yaml
+jobs:
+  deploy: 
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: henrotaym/prepare-terraform-variables-action@v1
+        with:
+          app_key: "trustup-io-website-monitoring"
+          github_branch: "main"
+          cloudflare_worksite_zone_id: "worksite"
+          cloudflare_trustup_io_zone_id: "trustup-io"
+          doppler_service_token_production: "production-token"
+          doppler_service_token_staging: "staging-token"
+```
+## DEV
 
 Use this template to bootstrap the creation of a TypeScript action.:rocket:
 
