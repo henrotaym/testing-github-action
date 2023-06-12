@@ -26,5 +26,5 @@ jobs:
           app_key: "trustup-io-website-monitoring"
           github_branch: "${{ github.ref }}"
       - run: |
-          echo {{ steps.variables-output.trustup_app_key }}
-          echo {{ steps.variables-output.trustup_app_key_suffixed }}
+          echo ${{ steps.variables-output.trustup_app_key }}
+          echo ${{ steps.variables-output.trustup_app_key_suffixed }}
