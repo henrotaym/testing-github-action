@@ -1,25 +1,9 @@
-name: 'build-test'
+name: 'test-pull'
 on: # rebuild any PRs and main branch changes
   pull_request:
-  push:
-    branches:
-      - main
-      - release/**
-      - dev/**
-  delete:
-    branches:
-      - dev/**
 
 jobs:
-  build: # make sure build/ci work properly
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - run: |
-          npm install
-      - run: |
-          npm run all
-  test-production: # make sure the action works on a clean machine without building
+  test: # make sure the action works on a clean machine without building
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -27,7 +11,7 @@ jobs:
         id: variables-output
         with:
           app_key: "trustup-io-website-monitoring"
-          github_branch: "${{ github.ref }}"
+          github_branch: "${{ github.event.pull_request.head.ref }}"
       - run: |
           echo doppler_app_service_token_secret: ${{ steps.variables-output.outputs.doppler_app_service_token_secret }}
           echo trustup_app_key: ${{ steps.variables-output.outputs.trustup_app_key }}
@@ -38,3 +22,5 @@ jobs:
           echo app_environment: ${{ steps.variables-output.outputs.app_environment }}
           echo cloudflare_zone_secret: ${{ steps.variables-output.outputs.cloudflare_zone_secret }}
           echo should_deploy: ${{ steps.variables-output.outputs.should_deploy }}
+          github_branch_head: "${{ github.event.pull_request.head.ref }}"
+          github_branch_base: "${{ github.event.pull_request.base.ref }}"
