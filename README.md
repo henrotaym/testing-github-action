@@ -4,19 +4,26 @@
 
 # USAGE
 ```yaml
+name: 'test-push'
+on:
+  push:
+    branches:
+      - main
+      - release/**
+      - dev/**
+
 jobs:
-  deploy: 
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: henrotaym/prepare-terraform-variables-action@v1
+      - uses: henrotaym/prepare-terraform-variables-action@v2
+        id: terraform-output
         with:
-          app_key: "trustup-io-website-monitoring"
-          github_branch: "main"
-          cloudflare_worksite_zone_id: "worksite"
-          cloudflare_trustup_io_zone_id: "trustup-io"
-          doppler_service_token_production: "production-token"
-          doppler_service_token_staging: "staging-token"
+          app_key: "${{ github.event.repository.name }}"
+          github_branch: "${{ github.ref }}"
+      - run: |
+          echo trustup_app_key: ${{ steps.terraform-output.outputs.trustup_app_key }}
 ```
 ## DEV
 

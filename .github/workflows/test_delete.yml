@@ -13,7 +13,7 @@ jobs:
       - uses: ./
         id: variables-output
         with:
-          app_key: "trustup-io-website-monitoring"
+          app_key: "${{ github.event.repository.name }}"
           github_branch: "${{ github.event.ref }}"
       - run: |
           echo doppler_app_service_token_secret: ${{ steps.variables-output.outputs.doppler_app_service_token_secret }}
