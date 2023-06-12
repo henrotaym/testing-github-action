@@ -290,8 +290,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const get_app_group_1 = __importDefault(__nccwpck_require__(9745));
 const getCloudflareZoneName = (appKey) => {
-    const appGroup = (0, get_app_group_1.default)(appKey);
-    return `CLOUDFLARE_DNS_ZONE_${appGroup.toUpperCase()}`;
+    const suffix = (0, get_app_group_1.default)(appKey)
+        .replace(new RegExp('-', 'g'), '_')
+        .toUpperCase();
+    return `CLOUDFLARE_DNS_ZONE_${suffix}`;
 };
 exports["default"] = getCloudflareZoneName;
 
