@@ -330,7 +330,9 @@ const getDopplerServiceTokenName = (environment, branch) => {
         const upperEnvironmentName = environment.toUpperCase();
         return `${prefix}_${upperEnvironmentName}`;
     }
-    const suffix = (0, get_short_branch_name_1.default)(branch).replace('-', '_').toUpperCase();
+    const suffix = (0, get_short_branch_name_1.default)(branch)
+        .replace(new RegExp('-', 'g'), '_')
+        .toUpperCase();
     return `${prefix}_${suffix}`;
 };
 exports["default"] = getDopplerServiceTokenName;

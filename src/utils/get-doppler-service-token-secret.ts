@@ -11,7 +11,9 @@ const getDopplerServiceTokenName = (
     return `${prefix}_${upperEnvironmentName}`
   }
 
-  const suffix = getShortBranchName(branch).replace('-', '_').toUpperCase()
+  const suffix = getShortBranchName(branch)
+    .replace(new RegExp('-', 'g'), '_')
+    .toUpperCase()
   return `${prefix}_${suffix}`
 }
 
