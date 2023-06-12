@@ -26,5 +26,12 @@ jobs:
           app_key: "trustup-io-website-monitoring"
           github_branch: "${{ github.ref }}"
       - run: |
+          echo doppler_app_service_token_secret: ${{ steps.variables-output.outputs.doppler_app_service_token_secret }}
           echo trustup_app_key: ${{ steps.variables-output.outputs.trustup_app_key }}
+          echo trustup_app_key_suffix: ${{ steps.variables-output.outputs.trustup_app_key_suffix }}
           echo trustup_app_key_suffixed: ${{ steps.variables-output.outputs.trustup_app_key_suffixed }}
+          echo dev_environment_to_deploy: ${{ steps.variables-output.outputs.dev_environment_to_deploy }}
+          echo app_url: ${{ steps.variables-output.outputs.app_url }}
+          echo app_environment: ${{ steps.variables-output.outputs.app_environment }}
+          echo cloudflare_zone_secret: ${{ steps.variables-output.outputs.cloudflare_zone_secret }}
+          echo should_deploy: ${{ steps.variables-output.outputs.should_deploy }}
