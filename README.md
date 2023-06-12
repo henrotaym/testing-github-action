@@ -25,7 +25,7 @@ jobs:
       - run: |
           echo trustup_app_key: ${{ steps.terraform-output.outputs.trustup_app_key }}
 ```
-## DEV
+## DEVOPS
 
 Use this template to bootstrap the creation of a TypeScript action.:rocket:
 
