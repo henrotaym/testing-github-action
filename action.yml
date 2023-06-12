@@ -25,6 +25,8 @@ outputs:
     description: "Cloudflare zone id secret name"
   should_deploy:
     description: "Telling if deploy should happen"
+  dev_environment_to_deploy:
+    description: "Dev environment to deploy"
 runs:
   using: "node16"
   main: "dist/index.js"
