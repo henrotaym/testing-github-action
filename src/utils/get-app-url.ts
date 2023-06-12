@@ -1,4 +1,4 @@
-import {APP_GROUP, Environment} from '../enums'
+import {APP_GROUP, ENVIRONMENT, Environment} from '../enums'
 import getShortBranchName from './get-short-branch-name'
 import isAppInGroup from './is-app-in-group'
 
@@ -8,11 +8,12 @@ const getAppUrl = (
   branch: string
 ): string => {
   const urlPieces = getUrlPieces(appKey)
-  if (environment === 'staging') urlPieces.unshift('staging')
-  if (environment === 'dev') {
+  if (environment === ENVIRONMENT.LOCAL) return `${appKey}.docker.localhost`
+  if (environment === ENVIRONMENT.DEV) {
     const branchName = getShortBranchName(branch)
-    urlPieces.unshift(branchName, 'dev')
+    urlPieces.unshift(branchName.replace('dev-', ''), 'dev')
   }
+  if (environment === ENVIRONMENT.STAGING) urlPieces.unshift('staging')
 
   return urlPieces.join('.')
 }

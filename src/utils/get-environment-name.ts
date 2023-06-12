@@ -5,7 +5,9 @@ const getEnvironmentName = (branch: string): Environment => {
   if (isMain) return ENVIRONMENT.PRODUCTION
   const isRelease = branch.startsWith('release')
   if (isRelease) return ENVIRONMENT.STAGING
-  return ENVIRONMENT.DEV
+  const isDev = branch.startsWith('dev')
+  if (isDev) return ENVIRONMENT.DEV
+  return ENVIRONMENT.LOCAL
 }
 
 export default getEnvironmentName

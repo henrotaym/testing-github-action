@@ -8,33 +8,23 @@ inputs:
   github_branch:
     required: true
     description: "Github branch"
-  cloudflare_worksite_zone_id:
-    description: "Worksite cloudflare zone id"
-    required: true
-  cloudflare_trustup_io_zone_id:
-    description: "Trustup IO cloudflare zone id"
-    required: true
-  doppler_service_token_production:
-    description: "Doppler token to retrieve secrets in production"
-    required: true
-  doppler_service_token_staging:
-    description: "Doppler token to retrieve secrets in staging"
-    required: true
 outputs:
-  doppler_app_service_token:
+  doppler_app_service_token_secret:
     description: "Doppler service token secret name"
   trustup_app_key:
     description: "Trustup app key"
-  suffixed_trustup_app_key:
+  trustup_app_key_suffix:
+    description: "Suffix applied to current trustup app key"
+  trustup_app_key_suffixed:
     description: "Trustup app key for current environment"
   app_url:
     description: "App url"
-  app_key:
-    description: "Generated app key to set in secrets if none present yet"
   app_environment:
-    description: "App environment based on current branch"
-  cloudflare_zone_id:
-    description: "Cloudflare zone to use for DNS record"
+    description: "Current app environment"
+  cloudflare_zone_secret:
+    description: "Cloudflare zone id secret name"
+  should_deploy:
+    description: "Telling if deploy should happen"
 runs:
   using: "node16"
   main: "dist/index.js"

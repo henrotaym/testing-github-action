@@ -1,14 +1,16 @@
 import * as core from '@actions/core'
 import {INPUT, OUTPUT} from './enums'
 import {
-  generateRandomKey,
+  getAppKeySuffix,
   getAppUrl,
   getBranchName,
-  getCloudflareZoneId,
-  getDopplerServiceToken,
-  getEnvironmentName
+  getCloudflareZoneSecret,
+  getDevEnvironmentToDeploy,
+  getDopplerServiceTokenSecret,
+  getEnvironmentName,
+  getSuffixedAppKey,
+  shouldDeploy
 } from './utils'
-import getSuffixedAppKey from './utils/get-suffixed-app-key'
 
 async function run(): Promise<void> {
   try {
@@ -16,20 +18,27 @@ async function run(): Promise<void> {
     const branch = getBranchName(fullbranch)
     const environment = getEnvironmentName(branch)
     const appKey = core.getInput(INPUT.APP_KEY)
+    const suffixedAppKey = getSuffixedAppKey(appKey, environment, branch)
+    const appKeySuffix = getAppKeySuffix(appKey, suffixedAppKey)
 
     core.setOutput(OUTPUT.APP_ENVIRONMENT, environment)
-    core.setOutput(OUTPUT.APP_KEY, generateRandomKey(appKey))
     core.setOutput(OUTPUT.APP_URL, getAppUrl(environment, appKey, branch))
-    core.setOutput(OUTPUT.CLOUFLARE_ZONE_ID, getCloudflareZoneId(appKey))
     core.setOutput(
-      OUTPUT.DOPPLER_APP_SERVICE_TOKEN,
-      getDopplerServiceToken(environment)
+      OUTPUT.CLOUDFLARE_ZONE_SECRET,
+      getCloudflareZoneSecret(appKey)
     )
     core.setOutput(
-      OUTPUT.SUFFIXED_TRUSTUP_APP_KEY,
-      getSuffixedAppKey(appKey, environment, branch)
+      OUTPUT.DOPPLER_APP_SERVICE_TOKEN_SECRET,
+      getDopplerServiceTokenSecret(environment, branch)
     )
+    core.setOutput(OUTPUT.TRUSTUP_APP_KEY_SUFFIXED, suffixedAppKey)
+    core.setOutput(OUTPUT.TRUSTUP_APP_KEY_SUFFIX, appKeySuffix)
     core.setOutput(OUTPUT.TRUSTUP_APP_KEY, appKey)
+    core.setOutput(OUTPUT.SHOULD_DEPLOY, shouldDeploy(environment))
+    core.setOutput(
+      OUTPUT.DEV_ENVIRONMENT_TO_DEPLOY,
+      getDevEnvironmentToDeploy(environment, appKeySuffix)
+    )
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
   }

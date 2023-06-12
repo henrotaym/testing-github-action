@@ -1,38 +1,102 @@
 require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 9489:
+/***/ 7119:
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.OUTPUT = exports.APP_GROUP = exports.ENVIRONMENT = exports.INPUT = void 0;
-exports.INPUT = {
-    APP_KEY: 'app_key',
-    GITHUB_BRANCH: 'github_branch',
-    CLOUDFLARE_WORKSITE_ZONE_ID: 'cloudflare_worksite_zone_id',
-    CLOUDFLARE_TRUSTUP_IO_ZONE_ID: 'cloudflare_trustup_io_zone_id',
-    DOPPLER_SERVICE_TOKEN_PRODUCTION: 'doppler_service_token_production',
-    DOPPLER_SERVICE_TOKEN_STAGING: 'doppler_service_token_staging'
-};
-exports.ENVIRONMENT = {
-    PRODUCTION: 'production',
-    DEV: 'dev',
-    STAGING: 'staging'
-};
+exports.APP_GROUP = void 0;
 exports.APP_GROUP = {
     TRUSTUP_IO: 'trustup-io',
     WORKSITE: 'worksite'
 };
-exports.OUTPUT = {
-    DOPPLER_APP_SERVICE_TOKEN: 'doppler_app_service_token',
-    TRUSTUP_APP_KEY: 'trustup_app_key',
-    SUFFIXED_TRUSTUP_APP_KEY: 'suffixed_trustup_app_key',
-    APP_URL: 'app_url',
+
+
+/***/ }),
+
+/***/ 3323:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.ENVIRONMENT = void 0;
+exports.ENVIRONMENT = {
+    PRODUCTION: 'production',
+    DEV: 'dev',
+    STAGING: 'staging',
+    LOCAL: 'local'
+};
+
+
+/***/ }),
+
+/***/ 9489:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+__exportStar(__nccwpck_require__(7119), exports);
+__exportStar(__nccwpck_require__(3323), exports);
+__exportStar(__nccwpck_require__(6540), exports);
+__exportStar(__nccwpck_require__(6200), exports);
+
+
+/***/ }),
+
+/***/ 6540:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.INPUT = void 0;
+exports.INPUT = {
     APP_KEY: 'app_key',
+    GITHUB_BRANCH: 'github_branch'
+    // CLOUDFLARE_WORKSITE_ZONE_ID: 'cloudflare_worksite_zone_id',
+    // CLOUDFLARE_TRUSTUP_IO_ZONE_ID: 'cloudflare_trustup_io_zone_id',
+    // DOPPLER_SERVICE_TOKEN_PRODUCTION: 'doppler_service_token_production',
+    // DOPPLER_SERVICE_TOKEN_STAGING: 'doppler_service_token_staging'
+};
+
+
+/***/ }),
+
+/***/ 6200:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.OUTPUT = void 0;
+exports.OUTPUT = {
+    DOPPLER_APP_SERVICE_TOKEN_SECRET: 'doppler_app_service_token_secret',
+    TRUSTUP_APP_KEY: 'trustup_app_key',
+    TRUSTUP_APP_KEY_SUFFIX: 'trustup_app_key_suffix',
+    TRUSTUP_APP_KEY_SUFFIXED: 'trustup_app_key_suffixed',
+    DEV_ENVIRONMENT_TO_DEPLOY: 'dev_environment_to_deploy',
+    APP_URL: 'app_url',
     APP_ENVIRONMENT: 'app_environment',
-    CLOUFLARE_ZONE_ID: 'cloudflare_zone_id'
+    CLOUDFLARE_ZONE_SECRET: 'cloudflare_zone_secret',
+    SHOULD_DEPLOY: 'should_deploy'
 };
 
 
@@ -75,14 +139,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
 const enums_1 = __nccwpck_require__(9489);
 const utils_1 = __nccwpck_require__(1606);
-const get_suffixed_app_key_1 = __importDefault(__nccwpck_require__(4931));
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -90,13 +150,17 @@ function run() {
             const branch = (0, utils_1.getBranchName)(fullbranch);
             const environment = (0, utils_1.getEnvironmentName)(branch);
             const appKey = core.getInput(enums_1.INPUT.APP_KEY);
+            const suffixedAppKey = (0, utils_1.getSuffixedAppKey)(appKey, environment, branch);
+            const appKeySuffix = (0, utils_1.getAppKeySuffix)(appKey, suffixedAppKey);
             core.setOutput(enums_1.OUTPUT.APP_ENVIRONMENT, environment);
-            core.setOutput(enums_1.OUTPUT.APP_KEY, (0, utils_1.generateRandomKey)(appKey));
             core.setOutput(enums_1.OUTPUT.APP_URL, (0, utils_1.getAppUrl)(environment, appKey, branch));
-            core.setOutput(enums_1.OUTPUT.CLOUFLARE_ZONE_ID, (0, utils_1.getCloudflareZoneId)(appKey));
-            core.setOutput(enums_1.OUTPUT.DOPPLER_APP_SERVICE_TOKEN, (0, utils_1.getDopplerServiceToken)(environment));
-            core.setOutput(enums_1.OUTPUT.SUFFIXED_TRUSTUP_APP_KEY, (0, get_suffixed_app_key_1.default)(appKey, environment, branch));
+            core.setOutput(enums_1.OUTPUT.CLOUDFLARE_ZONE_SECRET, (0, utils_1.getCloudflareZoneSecret)(appKey));
+            core.setOutput(enums_1.OUTPUT.DOPPLER_APP_SERVICE_TOKEN_SECRET, (0, utils_1.getDopplerServiceTokenSecret)(environment, branch));
+            core.setOutput(enums_1.OUTPUT.TRUSTUP_APP_KEY_SUFFIXED, suffixedAppKey);
+            core.setOutput(enums_1.OUTPUT.TRUSTUP_APP_KEY_SUFFIX, appKeySuffix);
             core.setOutput(enums_1.OUTPUT.TRUSTUP_APP_KEY, appKey);
+            core.setOutput(enums_1.OUTPUT.SHOULD_DEPLOY, (0, utils_1.shouldDeploy)(environment));
+            core.setOutput(enums_1.OUTPUT.DEV_ENVIRONMENT_TO_DEPLOY, (0, utils_1.getDevEnvironmentToDeploy)(environment, appKeySuffix));
         }
         catch (error) {
             if (error instanceof Error)
@@ -131,6 +195,40 @@ exports["default"] = generateRandomKey;
 
 /***/ }),
 
+/***/ 9745:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const enums_1 = __nccwpck_require__(9489);
+const is_app_in_group_1 = __importDefault(__nccwpck_require__(8805));
+const getAppGroup = (appKey) => (0, is_app_in_group_1.default)(appKey, enums_1.APP_GROUP.WORKSITE)
+    ? enums_1.APP_GROUP.WORKSITE
+    : enums_1.APP_GROUP.TRUSTUP_IO;
+exports["default"] = getAppGroup;
+
+
+/***/ }),
+
+/***/ 6258:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const getAppKeySuffix = (appKey, suffixedAppKey) => {
+    const isSame = appKey === suffixedAppKey;
+    return isSame ? '' : suffixedAppKey.replace(`${appKey}-`, '');
+};
+exports["default"] = getAppKeySuffix;
+
+
+/***/ }),
+
 /***/ 1338:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -145,12 +243,14 @@ const get_short_branch_name_1 = __importDefault(__nccwpck_require__(4059));
 const is_app_in_group_1 = __importDefault(__nccwpck_require__(8805));
 const getAppUrl = (environment, appKey, branch) => {
     const urlPieces = getUrlPieces(appKey);
-    if (environment === 'staging')
-        urlPieces.unshift('staging');
-    if (environment === 'dev') {
+    if (environment === enums_1.ENVIRONMENT.LOCAL)
+        return `${appKey}.docker.localhost`;
+    if (environment === enums_1.ENVIRONMENT.DEV) {
         const branchName = (0, get_short_branch_name_1.default)(branch);
-        urlPieces.unshift(branchName, 'dev');
+        urlPieces.unshift(branchName.replace('dev-', ''), 'dev');
     }
+    if (environment === enums_1.ENVIRONMENT.STAGING)
+        urlPieces.unshift('staging');
     return urlPieces.join('.');
 };
 const getUrlPieces = (appKey) => {
@@ -179,96 +279,59 @@ exports["default"] = getBranchName;
 
 /***/ }),
 
-/***/ 8438:
+/***/ 8693:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const core = __importStar(__nccwpck_require__(2186));
-const enums_1 = __nccwpck_require__(9489);
-const is_app_in_group_1 = __importDefault(__nccwpck_require__(8805));
-const getCloudflareZoneId = (appKey) => {
-    const isWorksite = (0, is_app_in_group_1.default)(appKey, enums_1.APP_GROUP.WORKSITE);
-    const inputKey = isWorksite
-        ? enums_1.INPUT.CLOUDFLARE_WORKSITE_ZONE_ID
-        : enums_1.INPUT.CLOUDFLARE_TRUSTUP_IO_ZONE_ID;
-    return core.getInput(inputKey);
+const get_app_group_1 = __importDefault(__nccwpck_require__(9745));
+const getCloudflareZoneName = (appKey) => {
+    const appGroup = (0, get_app_group_1.default)(appKey);
+    return `CLOUDFLARE_DNS_ZONE_${appGroup.toUpperCase()}`;
 };
-exports["default"] = getCloudflareZoneId;
+exports["default"] = getCloudflareZoneName;
 
 
 /***/ }),
 
-/***/ 3450:
+/***/ 1004:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const enums_1 = __nccwpck_require__(9489);
+const getDevEnvironmentToDeploy = (environment, appKeySuffix) => (environment === enums_1.ENVIRONMENT.DEV ? appKeySuffix : '');
+exports["default"] = getDevEnvironmentToDeploy;
+
+
+/***/ }),
+
+/***/ 6290:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const core = __importStar(__nccwpck_require__(2186));
 const enums_1 = __nccwpck_require__(9489);
-const getDopplerServiceToken = (environment) => {
-    const isProduction = environment === enums_1.ENVIRONMENT.PRODUCTION;
-    // TODO for dev deployment
-    // create environment
-    // copy staging environment
-    // create service token
-    const inputKey = isProduction
-        ? enums_1.INPUT.DOPPLER_SERVICE_TOKEN_PRODUCTION
-        : enums_1.INPUT.DOPPLER_SERVICE_TOKEN_STAGING;
-    return core.getInput(inputKey);
+const get_short_branch_name_1 = __importDefault(__nccwpck_require__(4059));
+const getDopplerServiceTokenName = (environment, branch) => {
+    const prefix = `DOPPLER_SERVICE_TOKEN`;
+    if (environment !== enums_1.ENVIRONMENT.DEV) {
+        const upperEnvironmentName = environment.toUpperCase();
+        return `${prefix}_${upperEnvironmentName}`;
+    }
+    const suffix = (0, get_short_branch_name_1.default)(branch).replace('-', '_').toUpperCase();
+    return `${prefix}_${suffix}`;
 };
-exports["default"] = getDopplerServiceToken;
+exports["default"] = getDopplerServiceTokenName;
 
 
 /***/ }),
@@ -287,7 +350,10 @@ const getEnvironmentName = (branch) => {
     const isRelease = branch.startsWith('release');
     if (isRelease)
         return enums_1.ENVIRONMENT.STAGING;
-    return enums_1.ENVIRONMENT.DEV;
+    const isDev = branch.startsWith('dev');
+    if (isDev)
+        return enums_1.ENVIRONMENT.DEV;
+    return enums_1.ENVIRONMENT.LOCAL;
 };
 exports["default"] = getEnvironmentName;
 
@@ -327,8 +393,10 @@ const getSuffixedAppKey = (appKey, environment, branch) => {
         return appKey;
     if (environment === enums_1.ENVIRONMENT.STAGING)
         return `${appKey}-staging`;
+    if (environment === enums_1.ENVIRONMENT.LOCAL)
+        return `${appKey}-local`;
     const suffix = (0, get_short_branch_name_1.default)(branch);
-    return `${appKey}-dev-${suffix}`;
+    return `${appKey}-${suffix}`;
 };
 exports["default"] = getSuffixedAppKey;
 
@@ -344,19 +412,29 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getCloudflareZoneId = exports.generateRandomKey = exports.getDopplerServiceToken = exports.getBranchName = exports.getEnvironmentName = exports.getAppUrl = void 0;
+exports.getDevEnvironmentToDeploy = exports.getAppGroup = exports.shouldDeploy = exports.getSuffixedAppKey = exports.getAppKeySuffix = exports.getCloudflareZoneSecret = exports.generateRandomKey = exports.getDopplerServiceTokenSecret = exports.getBranchName = exports.getEnvironmentName = exports.getAppUrl = void 0;
 var get_app_url_1 = __nccwpck_require__(1338);
 Object.defineProperty(exports, "getAppUrl", ({ enumerable: true, get: function () { return __importDefault(get_app_url_1).default; } }));
 var get_environment_name_1 = __nccwpck_require__(3017);
 Object.defineProperty(exports, "getEnvironmentName", ({ enumerable: true, get: function () { return __importDefault(get_environment_name_1).default; } }));
 var get_branch_name_1 = __nccwpck_require__(3205);
 Object.defineProperty(exports, "getBranchName", ({ enumerable: true, get: function () { return __importDefault(get_branch_name_1).default; } }));
-var get_doppler_service_token_1 = __nccwpck_require__(3450);
-Object.defineProperty(exports, "getDopplerServiceToken", ({ enumerable: true, get: function () { return __importDefault(get_doppler_service_token_1).default; } }));
+var get_doppler_service_token_secret_1 = __nccwpck_require__(6290);
+Object.defineProperty(exports, "getDopplerServiceTokenSecret", ({ enumerable: true, get: function () { return __importDefault(get_doppler_service_token_secret_1).default; } }));
 var generate_random_key_1 = __nccwpck_require__(3414);
 Object.defineProperty(exports, "generateRandomKey", ({ enumerable: true, get: function () { return __importDefault(generate_random_key_1).default; } }));
-var get_cloudflare_zone_id_1 = __nccwpck_require__(8438);
-Object.defineProperty(exports, "getCloudflareZoneId", ({ enumerable: true, get: function () { return __importDefault(get_cloudflare_zone_id_1).default; } }));
+var get_cloudflare_zone_secret_1 = __nccwpck_require__(8693);
+Object.defineProperty(exports, "getCloudflareZoneSecret", ({ enumerable: true, get: function () { return __importDefault(get_cloudflare_zone_secret_1).default; } }));
+var get_app_key_suffix_1 = __nccwpck_require__(6258);
+Object.defineProperty(exports, "getAppKeySuffix", ({ enumerable: true, get: function () { return __importDefault(get_app_key_suffix_1).default; } }));
+var get_suffixed_app_key_1 = __nccwpck_require__(4931);
+Object.defineProperty(exports, "getSuffixedAppKey", ({ enumerable: true, get: function () { return __importDefault(get_suffixed_app_key_1).default; } }));
+var should_deploy_1 = __nccwpck_require__(5973);
+Object.defineProperty(exports, "shouldDeploy", ({ enumerable: true, get: function () { return __importDefault(should_deploy_1).default; } }));
+var get_app_group_1 = __nccwpck_require__(9745);
+Object.defineProperty(exports, "getAppGroup", ({ enumerable: true, get: function () { return __importDefault(get_app_group_1).default; } }));
+var get_dev_environment_to_deploy_1 = __nccwpck_require__(1004);
+Object.defineProperty(exports, "getDevEnvironmentToDeploy", ({ enumerable: true, get: function () { return __importDefault(get_dev_environment_to_deploy_1).default; } }));
 
 
 /***/ }),
@@ -369,6 +447,19 @@ Object.defineProperty(exports, "getCloudflareZoneId", ({ enumerable: true, get: 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const isAppInGroup = (appKey, appGroup) => appKey.startsWith(appGroup);
 exports["default"] = isAppInGroup;
+
+
+/***/ }),
+
+/***/ 5973:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const enums_1 = __nccwpck_require__(9489);
+const shouldDeploy = (environment) => environment !== enums_1.ENVIRONMENT.LOCAL;
+exports["default"] = shouldDeploy;
 
 
 /***/ }),

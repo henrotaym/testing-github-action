@@ -4,7 +4,8 @@ on: # rebuild any PRs and main branch changes
   push:
     branches:
       - main
-      - 'releases/*'
+      - release/**
+      - dev/**
 
 jobs:
   build: # make sure build/ci work properly
@@ -15,15 +16,15 @@ jobs:
           npm install
       - run: |
           npm run all
-  test: # make sure the action works on a clean machine without building
+  test-production: # make sure the action works on a clean machine without building
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: ./
+        id: variables-output
         with:
           app_key: "trustup-io-website-monitoring"
-          github_branch: "main"
-          cloudflare_worksite_zone_id: "worksite"
-          cloudflare_trustup_io_zone_id: "trustup-io"
-          doppler_service_token_production: "production-token"
-          doppler_service_token_staging: "staging-token"
+          github_branch: "${{ github.ref }}"
+      - run: |
+          echo {{ steps.variables-output.trustup_app_key }}
+          echo {{ steps.variables-output.trustup_app_key_suffixed }}
