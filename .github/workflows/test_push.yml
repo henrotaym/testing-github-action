@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: henrotaym/prepare-terraform-variables-action@v2
+      - uses: ./
         id: variables-output
         with:
           app_key: "${{ github.event.repository.name }}"
