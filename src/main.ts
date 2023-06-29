@@ -4,6 +4,7 @@ import {
   getAppKeySuffix,
   getAppUrl,
   getBranchName,
+  getBucketUrl,
   getCloudflareZoneSecret,
   getDevEnvironmentToDeploy,
   getDopplerServiceTokenSecret,
@@ -23,6 +24,7 @@ async function run(): Promise<void> {
 
     core.setOutput(OUTPUT.APP_ENVIRONMENT, environment)
     core.setOutput(OUTPUT.APP_URL, getAppUrl(environment, appKey, branch))
+    core.setOutput(OUTPUT.BUCKET_URL, getBucketUrl(environment, appKey, branch))
     core.setOutput(
       OUTPUT.CLOUDFLARE_ZONE_SECRET,
       getCloudflareZoneSecret(appKey)

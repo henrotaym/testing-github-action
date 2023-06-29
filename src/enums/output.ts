@@ -7,6 +7,7 @@ export const OUTPUT = {
   TRUSTUP_APP_KEY_SUFFIXED: 'trustup_app_key_suffixed',
   DEV_ENVIRONMENT_TO_DEPLOY: 'dev_environment_to_deploy',
   APP_URL: 'app_url',
+  BUCKET_URL: 'bucket_url',
   APP_ENVIRONMENT: 'app_environment',
   CLOUDFLARE_ZONE_SECRET: 'cloudflare_zone_secret',
   SHOULD_DEPLOY: 'should_deploy'

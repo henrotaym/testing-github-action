@@ -23,6 +23,7 @@ jobs:
           echo trustup_app_key_suffixed: ${{ steps.variables-output.outputs.trustup_app_key_suffixed }}
           echo dev_environment_to_deploy: ${{ steps.variables-output.outputs.dev_environment_to_deploy }}
           echo app_url: ${{ steps.variables-output.outputs.app_url }}
+          echo bucket_url: ${{ steps.variables-output.outputs.bucket_url }}
           echo app_environment: ${{ steps.variables-output.outputs.app_environment }}
           echo cloudflare_zone_secret: ${{ steps.variables-output.outputs.cloudflare_zone_secret }}
           echo should_deploy: ${{ steps.variables-output.outputs.should_deploy }}

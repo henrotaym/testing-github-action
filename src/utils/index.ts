@@ -1,4 +1,5 @@
 export {default as getAppUrl} from './get-app-url'
+export {default as getBucketUrl} from './get-bucket-url'
 export {default as getEnvironmentName} from './get-environment-name'
 export {default as getBranchName} from './get-branch-name'
 export {default as getDopplerServiceTokenSecret} from './get-doppler-service-token-secret'

@@ -90,6 +90,7 @@ exports.OUTPUT = {
     TRUSTUP_APP_KEY_SUFFIXED: 'trustup_app_key_suffixed',
     DEV_ENVIRONMENT_TO_DEPLOY: 'dev_environment_to_deploy',
     APP_URL: 'app_url',
+    BUCKET_URL: 'bucket_url',
     APP_ENVIRONMENT: 'app_environment',
     CLOUDFLARE_ZONE_SECRET: 'cloudflare_zone_secret',
     SHOULD_DEPLOY: 'should_deploy'
@@ -150,6 +151,7 @@ function run() {
             const appKeySuffix = (0, utils_1.getAppKeySuffix)(appKey, suffixedAppKey);
             core.setOutput(enums_1.OUTPUT.APP_ENVIRONMENT, environment);
             core.setOutput(enums_1.OUTPUT.APP_URL, (0, utils_1.getAppUrl)(environment, appKey, branch));
+            core.setOutput(enums_1.OUTPUT.BUCKET_URL, (0, utils_1.getBucketUrl)(environment, appKey, branch));
             core.setOutput(enums_1.OUTPUT.CLOUDFLARE_ZONE_SECRET, (0, utils_1.getCloudflareZoneSecret)(appKey));
             core.setOutput(enums_1.OUTPUT.DOPPLER_APP_SERVICE_TOKEN_SECRET, (0, utils_1.getDopplerServiceTokenSecret)(environment, branch));
             core.setOutput(enums_1.OUTPUT.TRUSTUP_APP_KEY_SUFFIXED, suffixedAppKey);
@@ -235,28 +237,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const enums_1 = __nccwpck_require__(9489);
+const get_raw_url_1 = __importDefault(__nccwpck_require__(8332));
 const get_short_branch_name_1 = __importDefault(__nccwpck_require__(4059));
-const is_app_in_group_1 = __importDefault(__nccwpck_require__(8805));
 const getAppUrl = (environment, appKey, branch) => {
-    const urlPieces = getUrlPieces(appKey);
     if (environment === enums_1.ENVIRONMENT.LOCAL)
         return `${appKey}.docker.localhost`;
-    if (environment === enums_1.ENVIRONMENT.DEV) {
-        const branchName = (0, get_short_branch_name_1.default)(branch);
-        urlPieces.unshift(branchName.replace('dev-', ''), 'dev');
-    }
+    const url = (0, get_raw_url_1.default)(appKey);
+    if (environment === enums_1.ENVIRONMENT.PRODUCTION)
+        return url;
     if (environment === enums_1.ENVIRONMENT.STAGING)
-        urlPieces.unshift('staging');
-    return urlPieces.join('.');
-};
-const getUrlPieces = (appKey) => {
-    const isWorksite = (0, is_app_in_group_1.default)(appKey, enums_1.APP_GROUP.WORKSITE);
-    const raw = appKey.split('-').reverse();
-    // Adding "eu" extension since worksite app do not include it.
-    if (isWorksite)
-        raw.splice(1, 0, 'eu');
-    const extension = raw.splice(-2).reverse();
-    return [...raw, ...extension];
+        return `staging-${url}`;
+    const branchName = (0, get_short_branch_name_1.default)(branch);
+    return `${branchName}-${url}`;
 };
 exports["default"] = getAppUrl;
 
@@ -271,6 +263,27 @@ exports["default"] = getAppUrl;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const getBranchName = (branchRef) => branchRef.replace('refs/heads/', '');
 exports["default"] = getBranchName;
+
+
+/***/ }),
+
+/***/ 5532:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const enums_1 = __nccwpck_require__(9489);
+const get_app_url_1 = __importDefault(__nccwpck_require__(1338));
+const getBucketUrl = (environment, appKey, branch) => {
+    if (environment === enums_1.ENVIRONMENT.LOCAL)
+        return `bucket-${appKey}.docker.localhost`;
+    return `assets-${(0, get_app_url_1.default)(environment, appKey, branch)}`;
+};
+exports["default"] = getBucketUrl;
 
 
 /***/ }),
@@ -360,6 +373,31 @@ exports["default"] = getEnvironmentName;
 
 /***/ }),
 
+/***/ 8332:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const enums_1 = __nccwpck_require__(9489);
+const is_app_in_group_1 = __importDefault(__nccwpck_require__(8805));
+const getRawUrl = (appKey) => {
+    const isWorksite = (0, is_app_in_group_1.default)(appKey, enums_1.APP_GROUP.WORKSITE);
+    const raw = appKey.split('-').reverse();
+    // Adding "eu" extension since worksite app do not include it.
+    if (isWorksite)
+        raw.splice(1, 0, 'eu');
+    const extension = raw.splice(-2).reverse();
+    return [...raw, ...extension].join('.');
+};
+exports["default"] = getRawUrl;
+
+
+/***/ }),
+
 /***/ 4059:
 /***/ ((__unused_webpack_module, exports) => {
 
@@ -412,9 +450,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getDevEnvironmentToDeploy = exports.getAppGroup = exports.shouldDeploy = exports.getSuffixedAppKey = exports.getAppKeySuffix = exports.getCloudflareZoneSecret = exports.generateRandomKey = exports.getDopplerServiceTokenSecret = exports.getBranchName = exports.getEnvironmentName = exports.getAppUrl = void 0;
+exports.getDevEnvironmentToDeploy = exports.getAppGroup = exports.shouldDeploy = exports.getSuffixedAppKey = exports.getAppKeySuffix = exports.getCloudflareZoneSecret = exports.generateRandomKey = exports.getDopplerServiceTokenSecret = exports.getBranchName = exports.getEnvironmentName = exports.getBucketUrl = exports.getAppUrl = void 0;
 var get_app_url_1 = __nccwpck_require__(1338);
 Object.defineProperty(exports, "getAppUrl", ({ enumerable: true, get: function () { return __importDefault(get_app_url_1).default; } }));
+var get_bucket_url_1 = __nccwpck_require__(5532);
+Object.defineProperty(exports, "getBucketUrl", ({ enumerable: true, get: function () { return __importDefault(get_bucket_url_1).default; } }));
 var get_environment_name_1 = __nccwpck_require__(3017);
 Object.defineProperty(exports, "getEnvironmentName", ({ enumerable: true, get: function () { return __importDefault(get_environment_name_1).default; } }));
 var get_branch_name_1 = __nccwpck_require__(3205);

@@ -19,6 +19,8 @@ outputs:
     description: "Trustup app key for current environment"
   app_url:
     description: "App url"
+  bucket_url:
+    description: "Bucket CDN url"
   app_environment:
     description: "Current app environment"
   cloudflare_zone_secret:
