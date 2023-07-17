@@ -10,7 +10,8 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.APP_GROUP = void 0;
 exports.APP_GROUP = {
     TRUSTUP_IO: 'trustup-io',
-    WORKSITE: 'worksite'
+    WORKSITE: 'worksite',
+    TRUSTUP_BE: 'trustup-be'
 };
 
 
@@ -204,9 +205,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const enums_1 = __nccwpck_require__(9489);
 const is_app_in_group_1 = __importDefault(__nccwpck_require__(8805));
-const getAppGroup = (appKey) => (0, is_app_in_group_1.default)(appKey, enums_1.APP_GROUP.WORKSITE)
-    ? enums_1.APP_GROUP.WORKSITE
-    : enums_1.APP_GROUP.TRUSTUP_IO;
+const getAppGroup = (appKey) => {
+    if ((0, is_app_in_group_1.default)(appKey, enums_1.APP_GROUP.WORKSITE))
+        return enums_1.APP_GROUP.WORKSITE;
+    if ((0, is_app_in_group_1.default)(appKey, enums_1.APP_GROUP.TRUSTUP_BE))
+        return enums_1.APP_GROUP.TRUSTUP_BE;
+    return enums_1.APP_GROUP.TRUSTUP_IO;
+};
 exports["default"] = getAppGroup;
 
 

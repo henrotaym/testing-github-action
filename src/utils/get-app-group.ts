@@ -1,9 +1,11 @@
 import {APP_GROUP, AppGroup} from '../enums'
 import isAppInGroup from './is-app-in-group'
 
-const getAppGroup = (appKey: string): AppGroup =>
-  isAppInGroup(appKey, APP_GROUP.WORKSITE)
-    ? APP_GROUP.WORKSITE
-    : APP_GROUP.TRUSTUP_IO
+const getAppGroup = (appKey: string): AppGroup => {
+  if (isAppInGroup(appKey, APP_GROUP.WORKSITE)) return APP_GROUP.WORKSITE
+  if (isAppInGroup(appKey, APP_GROUP.TRUSTUP_BE)) return APP_GROUP.TRUSTUP_BE
+
+  return APP_GROUP.TRUSTUP_IO
+}
 
 export default getAppGroup
