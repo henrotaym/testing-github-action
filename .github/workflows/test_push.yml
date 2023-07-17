@@ -14,8 +14,8 @@ jobs:
       - uses: henrotaym/prepare-terraform-variables-action@v3
         id: variables-output
         with:
-          app_key: "${{ github.event.repository.name }}"
-          github_branch: "${{ github.ref }}"
+          app_key: "trustup-be-dashboard"
+          github_branch: "refs/heads/release/v1"
       - run: |
           echo doppler_app_service_token_secret: ${{ steps.variables-output.outputs.doppler_app_service_token_secret }}
           echo trustup_app_key: ${{ steps.variables-output.outputs.trustup_app_key }}
