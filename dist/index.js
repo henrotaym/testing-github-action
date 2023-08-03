@@ -391,12 +391,12 @@ const enums_1 = __nccwpck_require__(9489);
 const is_app_in_group_1 = __importDefault(__nccwpck_require__(8805));
 const getRawUrl = (appKey) => {
     const isWorksite = (0, is_app_in_group_1.default)(appKey, enums_1.APP_GROUP.WORKSITE);
-    const raw = appKey.split('-').reverse();
+    const raw = appKey.split('-');
     // Adding "eu" extension since worksite app do not include it.
     if (isWorksite)
         raw.splice(1, 0, 'eu');
-    const extension = raw.splice(-2).reverse();
-    return [...raw, ...extension].join('.');
+    const extension = raw.splice(0, 2);
+    return [raw.join('-'), ...extension].join('.');
 };
 exports["default"] = getRawUrl;
 

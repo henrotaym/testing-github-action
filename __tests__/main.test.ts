@@ -91,3 +91,19 @@ test('test trustup be environment', () => {
   }
   console.log(cp.execFileSync(np, [ip], options).toString())
 })
+
+test('test trustup be environment', () => {
+  process.env['INPUT_APP_KEY'] = 'trustup-io-leads-synchronizer'
+  process.env['INPUT_GITHUB_BRANCH'] = 'refs/heads/release/v1'
+  // process.env['INPUT_CLOUDFLARE_WORKSITE_ZONE_ID'] = 'worksite'
+  // process.env['INPUT_CLOUDFLARE_TRUSTUP_IO_ZONE_ID'] = 'trustup-io'
+  // process.env['INPUT_DOPPLER_SERVICE_TOKEN_PRODUCTION'] = 'production-app-token'
+  // process.env['INPUT_DOPPLER_SERVICE_TOKEN_STAGING'] = 'staging-app-token'
+
+  const np = process.execPath
+  const ip = path.join(__dirname, '..', 'lib', 'main.js')
+  const options: cp.ExecFileSyncOptions = {
+    env: process.env
+  }
+  console.log(cp.execFileSync(np, [ip], options).toString())
+})
