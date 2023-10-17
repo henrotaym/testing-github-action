@@ -4,7 +4,7 @@
 
 # USAGE
 ```yaml
-name: 'display-terraform-variables'
+name: 'test-marketplace-action'
 on:
   push:
     branches:
@@ -18,10 +18,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -
-        name: Checkout Repository
+        name: Checkout repository
         uses: actions/checkout@v3
       -
-        name: Prepare terraform variables
+        name: Prepare variables
         uses: henrotaym/prepare-terraform-variables-action@v3
         id: terraform-variables
         with:
