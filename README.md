@@ -5,7 +5,7 @@
 # USAGE
 ```yaml
 name: 'display-terraform-variables'
-on: # rebuild any PRs and main branch changes
+on:
   push:
     branches:
       - main
