@@ -10,6 +10,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.APP_GROUP = void 0;
 exports.APP_GROUP = {
     TRUSTUP_IO: 'trustup-io',
+    TRUSTUP_PRO: 'trustup-pro',
     WORKSITE: 'worksite',
     TRUSTUP_BE: 'trustup-be'
 };
@@ -210,6 +211,8 @@ const getAppGroup = (appKey) => {
         return enums_1.APP_GROUP.WORKSITE;
     if ((0, is_app_in_group_1.default)(appKey, enums_1.APP_GROUP.TRUSTUP_BE))
         return enums_1.APP_GROUP.TRUSTUP_BE;
+    if ((0, is_app_in_group_1.default)(appKey, enums_1.APP_GROUP.TRUSTUP_PRO))
+        return enums_1.APP_GROUP.TRUSTUP_PRO;
     return enums_1.APP_GROUP.TRUSTUP_IO;
 };
 exports["default"] = getAppGroup;

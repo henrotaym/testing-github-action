@@ -108,6 +108,18 @@ test('test trustup be environment', () => {
   console.log(cp.execFileSync(np, [ip], options).toString())
 })
 
+test('test trustup pro environment', () => {
+  process.env['INPUT_APP_KEY'] = 'trustup-pro-leads-synchronizer'
+  process.env['INPUT_GITHUB_BRANCH'] = 'refs/heads/release/v1'
+
+  const np = process.execPath
+  const ip = path.join(__dirname, '..', 'lib', 'main.js')
+  const options: cp.ExecFileSyncOptions = {
+    env: process.env
+  }
+  console.log(cp.execFileSync(np, [ip], options).toString())
+})
+
 test('test staging branch matches staging environment', () => {
   process.env['INPUT_APP_KEY'] = 'trustup-io-leads-synchronizer'
   process.env['INPUT_GITHUB_BRANCH'] = 'refs/heads/staging'
